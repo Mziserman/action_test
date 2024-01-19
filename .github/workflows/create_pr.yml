@@ -22,6 +22,7 @@ jobs:
       run: |
         git config --local user.email "action@github.com"
         git config --local user.name "GitHub Action"
+        git checkout -b auto-pr-data-update-${{ github.run_id }}
         git add myfile${{ github.run_id }}.txt
         git commit -m "Add myfile${{ github.run_id }}.txt"
         git push
