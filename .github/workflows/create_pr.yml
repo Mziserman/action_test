@@ -26,7 +26,6 @@ jobs:
         git checkout -b auto-pr-data-update-${{ github.run_id }}
         git add myfile${{ github.run_id }}.txt
         git commit -m "Add myfile${{ github.run_id }}.txt"
-        git push origin auto-pr-data-update-${{ github.run_id }}
 
     - name: Checkout code
       uses: actions/checkout@v2
