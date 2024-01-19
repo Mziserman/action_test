@@ -4,6 +4,8 @@ on:
   schedule:
   # every 2 minutes
   - cron: '*/2 * * * *'
+permissions:
+  contents: write
 
 jobs:
   createPullRequest:
