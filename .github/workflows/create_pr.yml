@@ -27,6 +27,7 @@ jobs:
         git add myfile${{ github.run_id }}.txt
         git commit -m "Add myfile${{ github.run_id }}.txt"
         git push origin auto-pr-data-update-${{ github.run_id }}
+        git checkout -b auto-pr-data-update-${{ github.run_id }}
 
     - name: Create Pull Request
       uses: peter-evans/create-pull-request@v3
@@ -37,3 +38,4 @@ jobs:
         body: >
           This is an auto-generated PR to update the data
         branch: auto-pr-data-update-${{ github.run_id }}
+        base: main
