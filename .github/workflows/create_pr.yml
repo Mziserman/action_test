@@ -4,11 +4,10 @@ on:
   schedule:
   - cron: '*/5 * * * *'
   workflow_dispatch:
-permissions:
-  contents: write
 
 jobs:
   createPullRequest:
+    permissions: write-all
     runs-on: ubuntu-latest
     steps:
     - name: Checkout code
