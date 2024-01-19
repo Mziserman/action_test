@@ -1,0 +1,36 @@
+name: Create PR on schedule
+
+on:
+  schedule:
+  # every 2 minutes
+  - cron: '*/2 * * * *'
+
+jobs:
+  createPullRequest:
+    runs-on: ubuntu-latest
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v2
+      with:
+        ref: main
+
+    - name: Create file
+      run: echo "This is some content" > myfile${{ github.run_id }}.txt
+
+    - name: Commit and push
+      run: |
+        git config --local user.email "action@github.com"
+        git config --local user.name "GitHub Action"
+        git add myfile${{ github.run_id }}.txt
+        git commit -m "Add myfile${{ github.run_id }}.txt"
+        git push
+
+    - name: Create Pull Request
+      uses: peter-evans/create-pull-request@v3
+      with:
+        token: ${{ secrets.GITHUB_TOKEN }}
+        commit-message: Update data
+        title: Update data
+        body: >
+          This is an auto-generated PR to update the data
+        branch: auto-pr-data-update-${{ github.run_id }}
