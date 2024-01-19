@@ -19,14 +19,14 @@ jobs:
     - name: Create file
       run: echo "This is some content" > myfile${{ github.run_id }}.txt
 
-    - name: Commit and push
-      run: |
-        git config --local user.email "action@github.com"
-        git config --local user.name "GitHub Action"
-        git checkout -b auto-pr-data-update-${{ github.run_id }}
-        git add myfile${{ github.run_id }}.txt
-        git commit -m "Add myfile${{ github.run_id }}.txt"
-        git push origin auto-pr-data-update-${{ github.run_id }}
+    # - name: Commit and push
+    #   run: |
+    #     git config --local user.email "action@github.com"
+    #     git config --local user.name "GitHub Action"
+    #     git checkout -b auto-pr-data-update-${{ github.run_id }}
+    #     git add myfile${{ github.run_id }}.txt
+    #     git commit -m "Add myfile${{ github.run_id }}.txt"
+    #     git push origin auto-pr-data-update-${{ github.run_id }}
 
     - name: Checkout code
       uses: actions/checkout@v2
