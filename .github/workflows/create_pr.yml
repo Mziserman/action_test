@@ -15,9 +15,11 @@ jobs:
       with:
         ref: main
 
+    - name: Set up Ruby
+      uses: ruby/setup-ruby@v1
+
     - name: Create file
       run: bin/rails generate partition_migration:drop_spoiled_partitions
-
 
     - name: Create Pull Request
       uses: peter-evans/create-pull-request@v3
