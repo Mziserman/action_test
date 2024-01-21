@@ -1,0 +1,9 @@
+Description:
+    Generates a migration to create the upcoming required partitions, according to the app's configuration.
+    Both the list of tables to be partitioned and the partitioning range depend are set in the application's initializers.
+
+Example:
+    bin/rails generate drop_partitions_migration
+
+    This will create:
+        db/migrate/TIMESTAMP_create_upcoming_partitions.rb
