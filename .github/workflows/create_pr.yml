@@ -33,4 +33,5 @@ jobs:
         body: >
           This is an auto-generated PR to update the data
         branch: auto-pr-data-update-${{ github.run_id }}
+        add-paths: db/migrate
         base: main
