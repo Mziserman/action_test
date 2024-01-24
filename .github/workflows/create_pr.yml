@@ -37,6 +37,8 @@ jobs:
         bin/rails db:setup
         bin/rails generate migrate create_users name:string
         bin/rails db:migrate
+      env:
+        DATABASE_URL: postgres://rails:rails@localhost/github_actions_test
 
     - name: Create Pull Request
       uses: peter-evans/create-pull-request@v3
