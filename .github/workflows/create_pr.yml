@@ -18,11 +18,25 @@ jobs:
     - name: Set up Ruby
       uses: ruby/setup-ruby@v1
 
+    - name: Install PostgreSQL
+      run: sudo apt-get -yqq install libpq-dev
+
+    - name: Set up Database
+      run: |
+        sudo service postgresql start
+        sudo -u postgres psql -c "CREATE USER rails WITH PASSWORD 'rails';"
+        sudo -u postgres psql -c "DROP DATABASE IF EXISTS github_actions_test;"
+        sudo -u postgres psql -c "CREATE DATABASE github_actions_test OWNER rails;"
+
+
     - name: Install dependencies
       run: bundle install
 
     - name: Create file
-      run: bin/rails generate partition_migration:drop_spoiled_partitions
+      run: |
+        bin/rails db:setup
+        bin/rails generate migrate create_users name:string
+        bin/rails db:migrate
 
     - name: Create Pull Request
       uses: peter-evans/create-pull-request@v3
