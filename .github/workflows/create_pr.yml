@@ -43,10 +43,10 @@ jobs:
 
     - name: Set up Database
       run: |
-        sudo -u postgres psql -c "CREATE USER runner WITH PASSWORD 'runner';"
-        sudo -u postgres psql -c "ALTER USER runner CREATEDB;"
-        sudo -u postgres psql -c "DROP DATABASE IF EXISTS action_ci;"
-        sudo -u postgres psql -c "CREATE DATABASE action_ci OWNER runner;"
+        sudo -u postgres psql -h localhost -c "CREATE USER runner WITH PASSWORD 'runner';"
+        sudo -u postgres psql -h localhost -c "ALTER USER runner CREATEDB;"
+        sudo -u postgres psql -h localhost -c "DROP DATABASE IF EXISTS action_ci;"
+        sudo -u postgres psql -h localhost -c "CREATE DATABASE action_ci OWNER runner;"
 
 
 
