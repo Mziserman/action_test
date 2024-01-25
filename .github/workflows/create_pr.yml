@@ -9,6 +9,22 @@ jobs:
   createPullRequest:
     permissions: write-all
     runs-on: ubuntu-latest
+    services:
+      # Label used to access the service container
+      postgres:
+        # Docker Hub image
+        image: postgres
+        # Provide the password for postgres
+        env:
+          POSTGRES_PASSWORD: postgres
+        # Set health checks to wait until postgres has started
+        options: >-
+          --health-cmd pg_isready
+          --health-interval 10s
+          --health-timeout 5s
+          --health-retries 5
+
+
     steps:
     - name: Checkout code
       uses: actions/checkout@v2
@@ -18,15 +34,16 @@ jobs:
     - name: Set up Ruby
       uses: ruby/setup-ruby@v1
 
-    - name: Install PostgreSQL
-      run: sudo apt-get -yqq install libpq-dev
+    # - name: Install PostgreSQL
+    #   run: sudo apt-get -yqq install libpq-dev
 
-    - name: Set up Database
-      run: |
-        sudo service postgresql start
-        sudo -u postgres psql -c "CREATE USER rails WITH PASSWORD 'rails';"
-        sudo -u postgres psql -c "DROP DATABASE IF EXISTS github_actions_test;"
-        sudo -u postgres psql -c "CREATE DATABASE github_actions_test OWNER rails;"
+    # - name: Set up Database
+    #   run: |
+    #     sudo service postgresql start
+    #     sudo -u postgres psql -c "CREATE USER runner WITH PASSWORD 'runner';"
+    #     sudo -u postgres psql -c "DROP DATABASE IF EXISTS github_actions_test;"
+    #     sudo -u postgres psql -c "CREATE DATABASE github_actions_test OWNER rails;"
+
 
 
     - name: Install dependencies
@@ -34,6 +51,12 @@ jobs:
 
     - name: Setup upterm session
       uses: lhotari/action-upterm@v1
+      env:
+          # The hostname used to communicate with the PostgreSQL service container
+          POSTGRES_HOST: postgres
+          # The default PostgreSQL port
+          POSTGRES_PORT: 5432
+
 
     - name: Create file
       run: |
