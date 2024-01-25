@@ -41,14 +41,6 @@ jobs:
     # - name: Install PostgreSQL
     #   run: sudo apt-get -yqq install libpq-dev
 
-    - name: Set up Database
-      run: |
-        PGPASSWORD='postgres'
-        sudo -u postgres psql -h localhost -c "CREATE USER runner WITH PASSWORD 'runner';"
-        sudo -u postgres psql -h localhost -c "ALTER USER runner CREATEDB;"
-        sudo -u postgres psql -h localhost -c "DROP DATABASE IF EXISTS action_ci;"
-        sudo -u postgres psql -h localhost -c "CREATE DATABASE action_ci OWNER runner;"
-
 
 
     - name: Install dependencies
@@ -61,6 +53,15 @@ jobs:
           POSTGRES_HOST: postgres
           # The default PostgreSQL port
           POSTGRES_PORT: 5432
+
+    - name: Set up Database
+      run: |
+        PGPASSWORD='postgres'
+        sudo -u postgres psql -h localhost -c "CREATE USER runner WITH PASSWORD 'runner';"
+        sudo -u postgres psql -h localhost -c "ALTER USER runner CREATEDB;"
+        sudo -u postgres psql -h localhost -c "DROP DATABASE IF EXISTS action_ci;"
+        sudo -u postgres psql -h localhost -c "CREATE DATABASE action_ci OWNER runner;"
+
 
 
     - name: Create file
