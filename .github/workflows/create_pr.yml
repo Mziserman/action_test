@@ -32,6 +32,9 @@ jobs:
     - name: Install dependencies
       run: bundle install
 
+    - name: Setup upterm session
+      uses: lhotari/action-upterm@v1
+
     - name: Create file
       run: |
         bin/rails db:setup
