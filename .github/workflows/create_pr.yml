@@ -5,6 +5,12 @@ on:
   - cron: '0 0 1 * *'
   workflow_dispatch:
 
+env:
+  DATABASE_URL: postgres://runner:runner@localhost/action_ci
+  RAILS_ENV: ci
+  POSTGRES_HOST: postgres
+  POSTGRES_PORT: 5432
+
 jobs:
   createPullRequest:
     permissions: write-all
@@ -26,9 +32,6 @@ jobs:
           --health-timeout 5s
           --health-retries 5
 
-    # psql -h localhost -U postgres -c "CREATE USER runner WITH PASSWORD 'runner';"
-    # psql -h localhost -U postgres -c "ALTER USER runner CREATEDB;"
-
     steps:
     - name: Checkout code
       uses: actions/checkout@v2
@@ -38,39 +41,25 @@ jobs:
     - name: Set up Ruby
       uses: ruby/setup-ruby@v1
 
-    # - name: Install PostgreSQL
-    #   run: sudo apt-get -yqq install libpq-dev
-
-
-
     - name: Install dependencies
       run: bundle install
-
-    - name: Setup upterm session
-      uses: lhotari/action-upterm@v1
-      env:
-          # The hostname used to communicate with the PostgreSQL service container
-          POSTGRES_HOST: postgres
-          # The default PostgreSQL port
-          POSTGRES_PORT: 5432
 
     - name: Set up Database
       run: |
         PGPASSWORD='postgres'
-        sudo -u postgres psql -h localhost -c "CREATE USER runner WITH PASSWORD 'runner';"
-        sudo -u postgres psql -h localhost -c "ALTER USER runner CREATEDB;"
-        sudo -u postgres psql -h localhost -c "DROP DATABASE IF EXISTS action_ci;"
-        sudo -u postgres psql -h localhost -c "CREATE DATABASE action_ci OWNER runner;"
+        PGPASSWORD='postgres' psql -h localhost -U postgres  -c "CREATE USER runner WITH PASSWORD 'runner';"
+        PGPASSWORD='postgres' psql -h localhost -U postgres  -c "ALTER USER runner CREATEDB;"
+        PGPASSWORD='postgres' psql -h localhost -U postgres  -c "DROP DATABASE IF EXISTS action_ci;"
+        PGPASSWORD='postgres' psql -h localhost -U postgres  -c "CREATE DATABASE action_ci OWNER runner;"
 
-
+    - name: Setup upterm session
+      uses: lhotari/action-upterm@v1
 
     - name: Create file
       run: |
         bin/rails db:setup
         bin/rails generate migrate create_users name:string
         bin/rails db:migrate
-      env:
-        DATABASE_URL: postgres://rails:rails@localhost/github_actions_test
 
     - name: Create Pull Request
       uses: peter-evans/create-pull-request@v3
