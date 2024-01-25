@@ -58,7 +58,7 @@ jobs:
     - name: Create file
       run: |
         bin/rails db:setup
-        bin/rails generate migrate create_users name:string
+        bin/rails generate migration create_users name:string
         bin/rails db:migrate
 
     - name: Create Pull Request
