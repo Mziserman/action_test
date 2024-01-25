@@ -9,6 +9,9 @@ jobs:
   createPullRequest:
     permissions: write-all
     runs-on: ubuntu-latest
+    container:
+      image: ruby:2.7.2
+      options: --health-cmd pg_isready --health-interval 10s --health-timeout 5s --health-retries 5
     services:
       # Label used to access the service container
       postgres:
