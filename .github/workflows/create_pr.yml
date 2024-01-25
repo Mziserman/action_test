@@ -26,6 +26,8 @@ jobs:
           --health-timeout 5s
           --health-retries 5
 
+    # psql -h localhost -U postgres -c "CREATE USER runner WITH PASSWORD 'runner';"
+    # psql -h localhost -U postgres -c "ALTER USER runner CREATEDB;"
 
     steps:
     - name: Checkout code
@@ -39,12 +41,12 @@ jobs:
     # - name: Install PostgreSQL
     #   run: sudo apt-get -yqq install libpq-dev
 
-    # - name: Set up Database
-    #   run: |
-    #     sudo service postgresql start
-    #     sudo -u postgres psql -c "CREATE USER runner WITH PASSWORD 'runner';"
-    #     sudo -u postgres psql -c "DROP DATABASE IF EXISTS github_actions_test;"
-    #     sudo -u postgres psql -c "CREATE DATABASE github_actions_test OWNER rails;"
+    - name: Set up Database
+      run: |
+        sudo -u postgres psql -c "CREATE USER runner WITH PASSWORD 'runner';"
+        sudo -u postgres psql -c "ALTER USER runner CREATEDB;"
+        sudo -u postgres psql -c "DROP DATABASE IF EXISTS action_ci;"
+        sudo -u postgres psql -c "CREATE DATABASE action_ci OWNER runner;"
 
 
 
