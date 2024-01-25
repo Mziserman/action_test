@@ -6,8 +6,8 @@ on:
   workflow_dispatch:
 
 env:
-  DATABASE_URL: postgres://runner:runner@localhost/action_ci
-  RAILS_ENV: ci
+  DATABASE_URL: postgres://runner:runner@localhost/action_development
+  RAILS_ENV: development
   POSTGRES_HOST: postgres
   POSTGRES_PORT: 5432
 
@@ -49,8 +49,8 @@ jobs:
         PGPASSWORD='postgres'
         PGPASSWORD='postgres' psql -h localhost -U postgres  -c "CREATE USER runner WITH PASSWORD 'runner';"
         PGPASSWORD='postgres' psql -h localhost -U postgres  -c "ALTER USER runner CREATEDB;"
-        PGPASSWORD='postgres' psql -h localhost -U postgres  -c "DROP DATABASE IF EXISTS action_ci;"
-        PGPASSWORD='postgres' psql -h localhost -U postgres  -c "CREATE DATABASE action_ci OWNER runner;"
+        PGPASSWORD='postgres' psql -h localhost -U postgres  -c "DROP DATABASE IF EXISTS action_development;"
+        PGPASSWORD='postgres' psql -h localhost -U postgres  -c "CREATE DATABASE action_development OWNER runner;"
 
     - name: Setup upterm session
       uses: lhotari/action-upterm@v1
