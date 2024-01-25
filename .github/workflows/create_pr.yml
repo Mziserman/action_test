@@ -52,8 +52,8 @@ jobs:
         PGPASSWORD='postgres' psql -h localhost -U postgres  -c "DROP DATABASE IF EXISTS action_development;"
         PGPASSWORD='postgres' psql -h localhost -U postgres  -c "CREATE DATABASE action_development OWNER runner;"
 
-    - name: Setup upterm session
-      uses: lhotari/action-upterm@v1
+    # - name: Setup upterm session
+    #   uses: lhotari/action-upterm@v1
 
     - name: Create file
       run: |
@@ -70,5 +70,6 @@ jobs:
         body: >
           This is an auto-generated PR to update the data
         branch: auto-pr-data-update-${{ github.run_id }}
-        add-paths: db/migrate
+        add-paths: db/*
+
         base: main
