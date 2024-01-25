@@ -43,6 +43,7 @@ jobs:
 
     - name: Set up Database
       run: |
+        PGPASSWORD='postgres'
         sudo -u postgres psql -h localhost -c "CREATE USER runner WITH PASSWORD 'runner';"
         sudo -u postgres psql -h localhost -c "ALTER USER runner CREATEDB;"
         sudo -u postgres psql -h localhost -c "DROP DATABASE IF EXISTS action_ci;"
