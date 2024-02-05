@@ -51,9 +51,8 @@ jobs:
         PGPASSWORD='postgres' psql -h localhost -U postgres  -c "ALTER USER runner CREATEDB;"
         PGPASSWORD='postgres' psql -h localhost -U postgres  -c "DROP DATABASE IF EXISTS action_development;"
         PGPASSWORD='postgres' psql -h localhost -U postgres  -c "CREATE DATABASE action_development OWNER runner;"
-
-    # - name: Setup upterm session
-    #   uses: lhotari/action-upterm@v1
+        PGPASSWORD='postgres' psql -h localhost -U postgres  -c "GRANT CREATE ON DATABASE action_development TO runner;"
+        PGPASSWORD='postgres' psql -h localhost -U postgres  -c "ALTER USER runner WITH SUPERUSER;"
 
     - name: Create file
       run: |
